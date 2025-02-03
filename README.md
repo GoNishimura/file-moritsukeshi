@@ -27,5 +27,5 @@ python src/main.py;
 ```
 
 ## 初心者向け
-- (本ソフトのexeファイル)[https://github.com/GoNishimura/file-moritsukeshi/releases/tag/v0.1.0]をダウンロードし、実行ファイルをダブルクリックすると起動できます。
+- [本ソフトのexeファイル](https://github.com/GoNishimura/file-moritsukeshi/releases/tag/v0.1.0)をダウンロードし、実行ファイルをダブルクリックすると起動できます。
   - 現在、Windows11とMacに対応しています。
