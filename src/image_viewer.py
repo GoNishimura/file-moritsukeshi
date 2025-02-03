@@ -10,7 +10,7 @@ class ImageViewer(tk.Toplevel):
   def __init__(self, parent, image_path):
     super().__init__(parent)
     self.parent = parent
-    self.initial_size = (800, 800)
+    self.initial_size = (800, 400)
     self.focus_set()
     
     self.image_path = image_path
