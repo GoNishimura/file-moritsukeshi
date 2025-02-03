@@ -1,7 +1,7 @@
 altgraph==0.17.4
 customtkinter==4.0.2
 darkdetect==0.8.0
-packaging==24.2
+packaging==21.3
 pefile==2023.2.7
 pillow==11.0.0
 pyinstaller==6.11.1
