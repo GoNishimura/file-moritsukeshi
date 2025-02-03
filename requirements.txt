@@ -5,6 +5,6 @@ packaging==21.3
 pefile==2023.2.7
 pillow==8.4.0
 pyinstaller==4.10
-pyinstaller-hooks-contrib==2025.1
+pyinstaller-hooks-contrib==2022.0
 pywin32-ctypes==0.2.3
 tkinterdnd2==0.4.2
