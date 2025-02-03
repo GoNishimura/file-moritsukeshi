@@ -20,7 +20,7 @@ targa形式のものも含めて、フォルダ内の画像閲覧ができるデ
 project_env\Scripts\activate
 ```
 ```
-pip install
+python -m pip install requests
 ```
 ```
 python src/main.py;
