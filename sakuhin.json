@@ -1,0 +1,134 @@
+{
+  "submission_format_name": "ほにゃららら",
+  "submission_folder_name": "ho01_224_d",
+  "submission_folder_name_base": "ho{:02}_{:03}_d",
+  "default_image_extensions": ".tga",
+  "default_numeral_padding": "_{:02}",
+  "folder_structure": {
+    "_lo": {
+      "type": "folder",
+      "only_one": true,
+      "required": true,
+      "folder_contents": {
+        "lo": {
+          "type": "image",
+          "name": "lo",
+          "description": "レイアウト"
+        },
+        "fr": {
+          "type": "image",
+          "description": "画面フレーム"
+        },
+        "atari": {
+          "type": "image",
+          "description": "アタリ指示"
+        }
+      }
+    },
+    "_sheet": {
+      "type": "folder",
+      "only_one": true,
+      "required": true,
+      "folder_contents": {
+        "time_sheet": {
+          "type": "image",
+          "name": "{parent_folder_name}",
+          "image_extension": ".jpg",
+          "description": "タイムシート"
+        }
+      }
+    },
+    "_xpool": {
+      "type": "folder",
+      "only_one": true,
+      "required": true,
+      "folder_contents": {
+        "_genga": {
+          "type": "folder",
+          "only_one": true,
+          "description": "元の原画をそのまま入れてください。",
+          "folder_contents": {
+            "genga_images": {
+              "type": "image",
+              "image_extension": ".jpg"
+            }
+          }
+        },
+        "clip_file": {
+          "name": "{submission_folder_name}",
+          "type": "file",
+          "only_one": true,
+          "required": true,
+          "description": "作業ファイル"
+        }
+      }
+    },
+    "douga_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "required": true,
+      "folder_contents": {
+        "douga_image": {
+          "type": "image",
+          "name": "{parent_folder_name}{:04}",
+          "description": "各セル動画"
+        }
+      }
+    },
+    "goseioya_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "folder_contents": {
+        "goseioya_image": {
+          "type": "image",
+          "name": "{parent_folder_name}_go{:02}",
+          "description": "合成親セル"
+        }
+      }
+    },
+    "dash_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "folder_contents": {
+        "dash_image": {
+          "type": "image",
+          "name": "{parent_folder_name}_d{:04}",
+          "description": "ダッシュセル"
+        }
+      }
+    },
+    "mask_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "folder_contents": {
+        "mask_image": {
+          "type": "image",
+          "name": "{parent_folder_name}_m{:04}",
+          "description": "マスクセル"
+        }
+      }
+    },
+    "ue_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "folder_contents": {
+        "ue_image": {
+          "type": "image",
+          "name": "{parent_folder_name}_ue{:04}",
+          "description": "上セル"
+        }
+      }
+    },
+    "shita_images": {
+      "type": "folder",
+      "name": "{original_name.lower()}",
+      "folder_contents": {
+        "shita_image": {
+          "type": "image",
+          "name": "{parent_folder_name}_sita{:04}",
+          "description": "下セル"
+        }
+      }
+    }
+  }
+}
