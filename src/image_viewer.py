@@ -33,6 +33,7 @@ class ImageViewer(tk.Toplevel):
     self.zoom_factor = 1.0
     self.min_zoom = 1.0
     self.max_zoom = 8.0
+    self.fixed_zoom_rate = 2
     self.offset_x = 0
     self.offset_y = 0
     self.start_x = 0
@@ -70,12 +71,11 @@ class ImageViewer(tk.Toplevel):
     self.bind("<Left>", self.show_prev_image)
     self.bind("<Right>", self.show_next_image)
     self.bind("<MouseWheel>", self.mouse_zoom)
-    self.bind("<Configure>", self.on_resize)
     
     self.canvas.bind("<ButtonPress-1>", self.on_drag_start)
     self.canvas.bind("<B1-Motion>", self.on_drag_motion)
     
-    self.load_image(self.image_paths[self.current_index])
+    # self.load_image(self.image_paths[self.current_index])
     self.fit_to_window()
   
   def load_image(self, image_path):
@@ -109,9 +109,9 @@ class ImageViewer(tk.Toplevel):
     scale_y = canvas_height / img_height
 
     self.min_zoom = min(scale_x, scale_y)
-    self.max_zoom = self.min_zoom * 8
+    self.max_zoom = self.min_zoom * self.fixed_zoom_rate
 
-    zoom_levels = [self.min_zoom] if min_zoom_only else [self.min_zoom * 2, self.min_zoom * 4, self.max_zoom]
+    zoom_levels = [self.min_zoom] if min_zoom_only else [self.max_zoom]
 
     for factor in zoom_levels:
       img = self.original_image.copy()
@@ -135,6 +135,7 @@ class ImageViewer(tk.Toplevel):
     return [canvas_width, canvas_height]
 
   def fit_to_window(self):
+    self.load_image(self.image_paths[self.current_index])
     self.zoom_factor = self.min_zoom
     self.offset_x = 0
     self.offset_y = 0
@@ -159,13 +160,13 @@ class ImageViewer(tk.Toplevel):
     self.zoom_label.config(text=f"{int(self.zoom_factor * 100)}%")
 
   def zoom_in(self):
-    if self.zoom_factor * 2 <= self.max_zoom:
-      self.zoom_factor *= 2
+    if self.zoom_factor * self.fixed_zoom_rate <= self.max_zoom:
+      self.zoom_factor *= self.fixed_zoom_rate
       self.resize_image()
 
   def zoom_out(self):
-    if self.zoom_factor / 2 >= self.min_zoom:
-      self.zoom_factor /= 2
+    if self.zoom_factor / self.fixed_zoom_rate >= self.min_zoom:
+      self.zoom_factor /= self.fixed_zoom_rate
       self.resize_image()
 
   def mouse_zoom(self, event):
@@ -173,8 +174,8 @@ class ImageViewer(tk.Toplevel):
     cursor_x = event.x - canvas_width // 2
     cursor_y = event.y - canvas_height // 2
 
-    scale = 2 if event.delta > 0 and self.zoom_factor * 2 <= self.max_zoom else \
-            0.5 if event.delta < 0 and self.zoom_factor / 2 >= self.min_zoom else 1
+    scale = self.fixed_zoom_rate if event.delta > 0 and self.zoom_factor * self.fixed_zoom_rate <= self.max_zoom else \
+            1 / self.fixed_zoom_rate if event.delta < 0 and self.zoom_factor / self.fixed_zoom_rate >= self.min_zoom else 1
 
     if scale != 1:
       new_zoom = self.zoom_factor * scale
@@ -196,10 +197,12 @@ class ImageViewer(tk.Toplevel):
     self.start_y = event.y
     self.canvas.move(self.image_id, dx, dy)  # 画像を直接移動
 
-  def on_resize(self, event=None):
-    # なんか処理が重すぎる
-    # self.load_image(self.image_paths[self.current_index])
-    self.resize_image()
+  # # 実行回数が多すぎて処理が重すぎる
+  # def on_resize(self, event=None):
+  #   # print("resize!")
+  #   # self.load_image(self.image_paths[self.current_index])
+  #   # self.create_image_cache(min_zoom_only=True)
+  #   # self.resize_image()
 
   def show_prev_image(self, event=None):
     self.current_index = (self.current_index - 1) % len(self.image_paths)
