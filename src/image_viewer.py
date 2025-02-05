@@ -38,7 +38,6 @@ class ImageViewer(tk.Toplevel):
     self.offset_y = 0
     self.start_x = 0
     self.start_y = 0
-    self.image_id = None
     
     # フッターの1列目（ナビゲーション）
     self.footer_col1 = tk.Frame(self.footer)
@@ -151,13 +150,24 @@ class ImageViewer(tk.Toplevel):
       self.offset_x = 0
       self.offset_y = 0
 
+    canvas_width, canvas_height = self.get_canvas_size()
+    img_width, img_height = self.img_tk.width(), self.img_tk.height()
+
     self.canvas.delete("all")
-    self.image_id = self.canvas.create_image(
-      self.get_canvas_size()[0] // 2 + self.offset_x, 
-      self.get_canvas_size()[1] // 2 + self.offset_y, 
-      image=self.img_tk, anchor="center"
+    self.canvas.create_image(
+      canvas_width // 2 + self.offset_x, 
+      canvas_height // 2 + self.offset_y, 
+      image=self.img_tk, anchor="center", tag="image"
     )
+
     self.zoom_label.config(text=f"{int(self.zoom_factor * 100)}%")
+    # 枠を描画
+    self.canvas.delete("frame")
+    self.canvas.create_rectangle(
+        (canvas_width - img_width) // 2 + self.offset_x, (canvas_height - img_height) // 2 + self.offset_y,
+        (canvas_width + img_width) // 2 + self.offset_x, (canvas_height + img_height) // 2 + self.offset_y,
+        outline="red", width=2, tag="frame"
+    )
 
   def zoom_in(self):
     if self.zoom_factor * self.fixed_zoom_rate <= self.max_zoom:
@@ -195,7 +205,8 @@ class ImageViewer(tk.Toplevel):
     self.offset_y += dy
     self.start_x = event.x
     self.start_y = event.y
-    self.canvas.move(self.image_id, dx, dy)  # 画像を直接移動
+    self.canvas.move("image", dx, dy)  # キャンバスを直接移動
+    self.canvas.move("frame", dx, dy)
 
   # # 実行回数が多すぎて処理が重すぎる
   # def on_resize(self, event=None):
@@ -205,12 +216,14 @@ class ImageViewer(tk.Toplevel):
   #   # self.resize_image()
 
   def show_prev_image(self, event=None):
+    # self.canvas.delete("all")
     self.current_index = (self.current_index - 1) % len(self.image_paths)
     self.load_image(self.image_paths[self.current_index])
     self.resize_image()
     self.update_navigation_buttons()
 
   def show_next_image(self, event=None):
+    # self.canvas.delete("all")
     self.current_index = (self.current_index + 1) % len(self.image_paths)
     self.load_image(self.image_paths[self.current_index])
     self.resize_image()
