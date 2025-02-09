@@ -172,6 +172,7 @@ class FileOrganizerApp(Tk):
         self.update_back_button_state()
         self.update_parent_button_state()
         self.update_link_button_state()
+        self.update_other_buttons_state()
 
     # 選択したパスを取得する
     def item_select(self, full_path):
